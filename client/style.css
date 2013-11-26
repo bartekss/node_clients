@@ -1,0 +1,72 @@
+body {
+  padding: 10px;
+  background-color: #EAEAEA;
+}
+
+
+.tableActions {
+    background-color:#EAEAEA; 
+    padding: 5px;
+}
+
+.loadingDataStyle {
+  text-align: center;
+}
+
+.gridStyle {
+    border: 1px solid #D4D4D4;
+    height: 500px;
+}
+
+.navcontainer ul
+{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.navcontainer ul li { display: inline; }
+
+.navbar-header {
+    width: 100%; 
+    background-color:#484848; 
+    text-align: center; 
+}
+
+.authinfocontainer {
+    background-color:#949290; 
+    text-align: right; 
+    color: white; 
+    padding-right: 15px
+}
+
+.glyphicon {
+    width: 25px;
+}
+
+.footer {
+    clear:both; 
+    padding-top: 10px;
+}
+
+.tableActions, .navbar-header, .authinfocontainer {
+    border: 1px solid #D4D4D4;
+    border-bottom: 0px;
+}
+
+
+
+a:link {
+COLOR: white;
+}
+a:visited {
+COLOR: white;
+}
+a:hover {
+COLOR: gray;
+}
+a:active {
+COLOR: white;
+}
+
+

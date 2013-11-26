@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html data-ng-app="testModule">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="/css/ng-grid.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/ng-grid-2.0.7.custom.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    
+    <div data-ng-controller="TestController">
+        <div class="navbar-header">
+                <ul class="nav navbar-nav" >
+                    <li active="true"><a href="#base">Baza</a></li>
+                    <li><a href="#reports">Raporty</a></li>
+                    <li><a href="#users">Użytkownicy</a></li>
+                </ul>
+        </div>
+        
+        <div class="authinfocontainer">
+            <span>Zalogowany jako: <b>pegiejot</b>  |  wyloguj</span>
+        </div>
+        
+        <div>
+        <div class="tableActions">
+            <button data-ng-click="add()" type="button" class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp&nbspDodaj&nbsp&nbsp 
+            </button>
+            <button data-ng-click="remove()" type="button" class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-minus"></span>&nbsp&nbspUsuń&nbsp&nbsp
+            </button>
+        </div>
+        
+        <div class="gridStyle" ng-grid="gridOptions" data-ng-hide="!isDataLoaded"></div>
+        <div data-ng-hide="isDataLoaded" class="loadingDataStyle">
+            <h2>Wczytywanie danych...</h2>
+        </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; PeGieJot 2013</p>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -19,7 +19,16 @@ if (!Array.prototype.getIndexById){
 var app = angular.module("testModule", ["ngGrid"]);
 
 app.controller("TestController", function ($scope) {
+    
     var socket = io.connect();
+    
+    socket.socket.on('error', function (reason){
+        console.error('Unable to connect Socket.IO', reason);
+    });
+    
+    socket.on('connect', function (){
+        console.info('successfully established a working connection \o/');
+    });
     
     $scope.isDataLoaded = false;
     
@@ -54,12 +63,10 @@ app.controller("TestController", function ($scope) {
                     { field: "last_edit", displayName: "zmiana", width: 80, enableCellEdit: true }]
     };
     
-    // $scope.$on('ngGridEventStartCellEdit', function () {
-    //           elm.focus();
-    //           elm.select();
-    //       });
     
     $scope.$on('ngGridEventStartCellEdit', function(evt){
+        // elm.focus();
+        // elm.select();
         $scope.OriginalRow = angular.copy(evt.targetScope.row.entity);
     });
 

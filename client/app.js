@@ -30,6 +30,8 @@ app.controller("TestController", function ($scope) {
         console.info('successfully established a working connection \o/');
     });
     
+    $scope.userName = '';
+    
     $scope.isDataLoaded = false;
     
     $scope.selectedItems = [];
@@ -96,6 +98,10 @@ app.controller("TestController", function ($scope) {
         $scope.isDataLoaded = false;
         socket.emit('get clients');
     };
+    
+    socket.on('set user', function (user) {
+        $scope.userName = user.name;
+    });
     
     socket.on('set clients', function (clients) {
         $scope.myData = clients;

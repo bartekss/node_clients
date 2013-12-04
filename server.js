@@ -172,7 +172,6 @@ router.post('/login', function(req, res) {
 
 
 
-var messages = [];
 var sockets = [];    
 
 io.on('connection', function (socket) {
@@ -181,33 +180,18 @@ io.on('connection', function (socket) {
     // });
 
     sockets.push(socket);
+    
+    auth.getUser(socket.handshake.sessionID, function(user){
+        if (user) {
+            socket.emit('set user', { id: user.id, name: user.login });
+        }
+    });
+    
+    
 
     socket.on('disconnect', function () {
       sockets.splice(sockets.indexOf(socket), 1);
       updateRoster();
-    });
-
-    socket.on('message', function (msg) {
-      var text = String(msg || '');
-
-      if (!text)
-        return;
-
-      socket.get('name', function (err, name) {
-        var data = {
-          name: name,
-          text: text
-        };
-
-        broadcast('message', data);
-        messages.push(data);
-      });
-    });
-
-    socket.on('identify', function (name) {
-      socket.set('name', String(name || 'Anonymous'), function (err) {
-        updateRoster();
-      });
     });
     
     //

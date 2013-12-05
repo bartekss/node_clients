@@ -78,7 +78,8 @@ var Authorization = function(dbConnection){
         dbConnection.query('select * from auth where login = ? and hash = ?;', [user, hash], function(err, rows, fields) {
             if (!err && rows.length == 1){
                 var id = rows[0].id;
-                dbConnection.query('update auth set session = ? where id = ?;', [ssid, id], function(err, result){
+                var date = new Date();
+                dbConnection.query('update auth set session = ?, last_login = ? where id = ?;', [ssid, date, id], function(err, result){
                     if (!err && result.changedRows == 1 && onCompleted){
                         onCompleted(rows[0]);
                     }
@@ -90,7 +91,7 @@ var Authorization = function(dbConnection){
     };
     
     this.logout = function(ssid) {
-        
+        dbConnection.query('update auth set session = ? where session = ?;', ['', ssid], function(err, result){});
     };
 };
 
@@ -142,8 +143,6 @@ router.get('/', function (req, res) {
 });
 
 router.get('/login', function(req, res) {
-    // if (req.user)
-    //     return res.redirect('/');
     auth.getUser(req.sessionID, function(user){
         if (user){
             return res.redirect('/');
@@ -169,15 +168,21 @@ router.post('/login', function(req, res) {
     });
 });
 
+router.get('/logout', function(req, res) {
+    auth.getUser(req.sessionID, function(user){
+        if (user){
+            auth.logout(req.sessionID);
+        }
+        return res.redirect('/');
+    });
+});
+
 
 
 
 var sockets = [];    
 
 io.on('connection', function (socket) {
-    // messages.forEach(function (data) {
-    //   socket.emit('message', data);
-    // });
 
     sockets.push(socket);
     
@@ -186,12 +191,10 @@ io.on('connection', function (socket) {
             socket.emit('set user', { id: user.id, name: user.login });
         }
     });
-    
-    
 
     socket.on('disconnect', function () {
-      sockets.splice(sockets.indexOf(socket), 1);
-      updateRoster();
+        console.log('disconnectiong client...');
+        sockets.splice(sockets.indexOf(socket), 1);
     });
     
     //
@@ -251,17 +254,6 @@ io.on('connection', function (socket) {
     
   });
 
-function updateRoster() {
-  async.map(
-    sockets,
-    function (socket, callback) {
-      socket.get('name', callback);
-    },
-    function (err, names) {
-      broadcast('roster', names);
-    }
-  );
-}
 
 function broadcast(event, data) {
   sockets.forEach(function (socket) {
@@ -271,6 +263,6 @@ function broadcast(event, data) {
 
 server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
   var addr = server.address();
-  console.log("Chat server listening at", addr.address + ":" + addr.port);
+  console.log("Server listening at", addr.address + ":" + addr.port);
 });
 

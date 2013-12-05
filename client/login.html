@@ -2,9 +2,18 @@
 <html>
     <head>
         <title> </title>
+        <script src="/js/md5.js"></script>
+        <script>
+            function hash(aForm)
+            {
+                var inputPassword = aForm['password'];
+                inputPassword.value = hex_md5(inputPassword.value);
+               return true;
+            }
+        </script>
     </head>
     <body>
-        <form action="/login" method="post">
+        <form action="/login" method="post" onsubmit="return hash(this)">
             <div>
                 <label>Username:</label>
                 <input type="text" name="username"/>
